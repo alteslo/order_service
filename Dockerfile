@@ -1,7 +1,7 @@
 # ==========================================
 # Stage 1: Builder
 # ==========================================
-FROM python:3.11-slim as builder
+FROM python:3.14.3-slim AS builder
 
 # Устанавливаем uv
 RUN pip install --no-cache-dir uv
@@ -10,7 +10,7 @@ WORKDIR /app
 
 # Копируем файлы зависимостей первыми для кеширования слоев
 COPY pyproject.toml .
-COPY README.md .
+COPY uv.lock .
 
 # Создаем виртуальное окружение и устанавливаем зависимости
 # --frozen: использует точные версии из uv.lock (если есть)
@@ -29,7 +29,7 @@ RUN python -m compileall src/
 # ==========================================
 # Stage 2: Runtime
 # ==========================================
-FROM python:3.14.3-slim as runtime
+FROM python:3.14.3-slim AS runtime
 
 # Создаем пользователя для безопасности (не root)
 RUN useradd --create-home --shell /bin/bash appuser
