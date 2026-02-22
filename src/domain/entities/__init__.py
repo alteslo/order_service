@@ -32,7 +32,7 @@ class User:
         :return: Новый экземпляр User
         :rtype: User
         """
-        return cls(email=Email(email), password_hash=password_hash)
+        return cls(email=Email(email), password_hash=password_hash, id=uuid.uuid4())
 
 
 @dataclass
