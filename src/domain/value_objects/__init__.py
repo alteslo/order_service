@@ -3,6 +3,8 @@ from dataclasses import dataclass
 from enum import Enum
 
 
+# TODO Можно провести рефакторинг и вынести в отдельные файлы, если количество Value Object будет расти
+
 class OrderStatus(str, Enum):
     """Статусы заказа"""
     PENDING = "pending"
