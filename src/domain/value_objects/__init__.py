@@ -5,8 +5,10 @@ from enum import Enum
 
 # TODO Можно провести рефакторинг и вынести в отдельные файлы, если количество Value Object будет расти
 
+
 class OrderStatus(str, Enum):
     """Статусы заказа"""
+
     PENDING = "pending"
     PAID = "paid"
     SHIPPED = "shipped"
@@ -42,6 +44,7 @@ class Email(str):
     Value Object для email.
     Гарантирует валидацию формата при создании.
     """
+
     value: str
 
     def __post_init__(self):
@@ -60,6 +63,7 @@ class Money:
     Value Object для денежных сумм.
     Гарантирует, что сумма не может быть отрицательной.
     """
+
     amount: float
 
     def __post_init__(self):

@@ -5,6 +5,7 @@ from datetime import UTC, datetime
 @dataclass
 class OrderCreatedEvent:
     """Событие: Заказ создан (для отправки в RabbitMQ)"""
+
     order_id: str
     event_type: str = "order.created"
     timestamp: datetime | None = None

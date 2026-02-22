@@ -9,6 +9,7 @@ from src.domain.value_objects import Email, Money, OrderStatus
 
 # TODO Можно провести рефакторинг и вынести в отдельные файлы, если количество Value Object будет расти
 
+
 @dataclass
 class User:
     """Сущность пользователя."""
@@ -64,11 +65,7 @@ class Order:
         :rtype: Order
         """
         order = cls(
-            user_id=user_id,
-            items=items,
-            tottal_price=tottal_price,
-            status=OrderStatus.PENDING,
-            id=uuid.uuid4()
+            user_id=user_id, items=items, tottal_price=tottal_price, status=OrderStatus.PENDING, id=uuid.uuid4()
         )
 
         order._add_domain_event(OrderCreatedEvent(order_id=str(order.id)))
@@ -104,16 +101,17 @@ class Order:
         """
         self._domain_events.clear()
 
-
     def _add_domain_event(self, event) -> None:
         self._domain_events.append(event)
 
 
 class DomainException(Exception):
     """Базовое исключение доменного слоя"""
+
     pass
 
 
 class InvalidStatusTransitionError(DomainException):
     """Попытка недопустимого перехода статуса"""
+
     pass
