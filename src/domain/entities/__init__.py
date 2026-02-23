@@ -14,6 +14,7 @@ from src.domain.value_objects import Email, Money, OrderStatus
 class User:
     """Сущность пользователя."""
 
+    name: str
     email: Email
     password_hash: str
 
@@ -21,11 +22,13 @@ class User:
     created_at: datetime = field(default_factory=lambda: datetime.now(UTC))
 
     @classmethod
-    def create(cls, email: str, password_hash: str) -> User:
+    def create(cls, name: str, email: str, password_hash: str) -> User:
         """
         Фабричный метод для создания нового пользователя.
         Гарантирует, что email будет валидирован через Value Object.
 
+        :param name: Имя пользователя
+        :type name: str
         :param email: Адрес электронной почты пользователя
         :type email: str
         :param password_hash: Хэш пароля пользователя
@@ -33,14 +36,14 @@ class User:
         :return: Новый экземпляр User
         :rtype: User
         """
-        return cls(email=Email(email), password_hash=password_hash, id=uuid.uuid4())
+        return cls(name=name, email=Email(email), password_hash=password_hash, id=uuid.uuid4())
 
 
 @dataclass
 class Order:
     user_id: UUID
-    items: list[str]
-    tottal_price: Money
+    items: list[dict]
+    total_price: Money
     status: OrderStatus = OrderStatus.PENDING
 
     id: UUID | None = None
@@ -50,7 +53,7 @@ class Order:
     _domain_events: list[str] = field(default_factory=list, init=False, repr=False)
 
     @classmethod
-    def create(cls, user_id: UUID, items: list[str], tottal_price: Money) -> Order:
+    def create(cls, user_id: UUID, items: list[dict], total_price: Money) -> Order:
         """
         Фабричный метод для создания нового заказа.
         Гарантирует, что статус заказа будет установлен в PENDING по умолчанию.
@@ -58,14 +61,14 @@ class Order:
         :param user_id: Идентификатор пользователя, который создает заказ
         :type user_id: UUID
         :param items: Список наименований товаров в заказе
-        :type items: list[str]
+        :type items: list[dict]
         :param tottal_price: Общая стоимость заказа
         :type tottal_price: Money
         :return: Новый экземпляр Order
         :rtype: Order
         """
         order = cls(
-            user_id=user_id, items=items, tottal_price=tottal_price, status=OrderStatus.PENDING, id=uuid.uuid4()
+            user_id=user_id, items=items, total_price=total_price, status=OrderStatus.PENDING, id=uuid.uuid4()
         )
 
         order._add_domain_event(OrderCreatedEvent(order_id=str(order.id)))
@@ -82,7 +85,7 @@ class Order:
         :raises ValueError: Если переход между статусами недопустим
         """
         if not OrderStatus.can_transition_to(self.status, new_status):
-            raise ValueError(f"Invalid status transition from {self.status} to {new_status}")
+            raise InvalidStatusTransitionError(f"Invalid status transition from {self.status} to {new_status}")
 
         self.status = new_status
 

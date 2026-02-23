@@ -18,4 +18,7 @@ ruff format src/domain/
 <http://127.0.0.1:15672/>
 
 ## Tests:
+## Pytest local:
+pytest src/tests/unit/domain/test_entities.py -v
+
 ## Pytest in Docker:
