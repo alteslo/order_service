@@ -42,7 +42,7 @@ services:
   api:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.local
       target: runtime
     command: uvicorn src.main:app --host 0.0.0.0 --port 8000 --reload
     ports:
@@ -56,6 +56,9 @@ services:
         condition: service_healthy
       rabbitmq:
         condition: service_healthy
+    volumes:
+      - ./src:/app/src  # Для hot-reload в разработке
+      - ./migrations:/app/migrations  # Для доступа к миграциям
 
   worker:
     build:
@@ -72,6 +75,8 @@ services:
         condition: service_healthy
       rabbitmq:
         condition: service_healthy
+    volumes:
+      - ./src:/app/src  # Для hot-reload в разработке
 
 volumes:
   postgres_:
