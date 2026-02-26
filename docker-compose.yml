@@ -58,6 +58,7 @@ services:
         condition: service_healthy
     volumes:
       - ./src:/app/src  # Для hot-reload в разработке
+      - ./migrations:/app/migrations  # Для доступа к миграциям
 
   worker:
     build:
