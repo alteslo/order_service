@@ -2,11 +2,8 @@
 # Stage 1: Builder
 # ==========================================
 FROM python:3.14.3-slim AS builder
-
 RUN pip install --no-cache-dir uv
-
 WORKDIR /app
-
 COPY pyproject.toml uv.lock alembic.ini ./
 
 # Устанавливаем только зависимости (без самого проекта)
@@ -17,11 +14,9 @@ RUN uv sync --no-dev --locked --no-editable --no-install-project
 # ==========================================
 FROM python:3.14.3-slim AS runtime
 
-# Создаём группу и пользователя (без домашней директории, без shell)
+# Создаём группу и пользователя (без домашней директории, без shell), переключаемся на не-root
 RUN groupadd -r appgroup --gid 1000 && \
     useradd -r -g appgroup --uid 1000 -s /sbin/nologin -m appuser
-
-# Переключаемся на не-root пользователя как можно раньше
 USER appuser
 
 WORKDIR /app
