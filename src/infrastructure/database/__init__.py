@@ -35,7 +35,7 @@ async def get_db_session() -> AsyncGenerator[AsyncSession, None]:
             await session.close()
 
 
-async def init_database(engine: AsyncEngine, base: DeclarativeBase, debug: bool = False) -> None:
+async def init_database(engine: AsyncEngine, base: type[DeclarativeBase], debug: bool = False) -> None:
     """
     Инициализация базы данных.
 
