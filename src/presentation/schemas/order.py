@@ -5,6 +5,7 @@ from src.domain.value_objects import OrderStatus
 
 class OrderItemRequest(BaseModel):
     """Товар в заказе (входные данные)"""
+
     id: int
     name: str
     quantity: int
@@ -13,6 +14,7 @@ class OrderItemRequest(BaseModel):
 
 class OrderCreateRequest(BaseModel):
     """Схема запроса для создания заказа"""
+
     items: list[OrderItemRequest]
 
     @field_validator("items")
@@ -25,11 +27,13 @@ class OrderCreateRequest(BaseModel):
 
 class OrderStatusUpdateRequest(BaseModel):
     """Схема запроса на обновление заказа"""
+
     status: OrderStatus
 
 
 class OrderItemResponse(BaseModel):
     """Товар в заказе (ответ)"""
+
     id: int
     name: str
     quantity: int
@@ -40,6 +44,7 @@ class OrderItemResponse(BaseModel):
 
 class OrderResponse(BaseModel):
     """Схема ответа для заказа"""
+
     id: str
     user_id: str
     items: list[OrderItemResponse]
@@ -51,5 +56,6 @@ class OrderResponse(BaseModel):
 
 class OrderListResponse(BaseModel):
     """Схема ответа для списка заказов"""
+
     orders: list[OrderResponse]
     total: int
