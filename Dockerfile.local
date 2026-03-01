@@ -26,5 +26,7 @@ COPY --from=builder --chown=appuser:appgroup /app/alembic.ini .
 
 ENV PATH="/app/.venv/bin:$PATH"
 
+# EXPOSE 8000
+
 # Команда по умолчанию (в dev переопределяется в docker-compose)
 CMD ["uvicorn", "src.main:app", "--host", "0.0.0.0", "--port", "8000"]

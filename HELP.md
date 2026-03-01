@@ -24,7 +24,7 @@ docker compose exec api alembic downgrade -1
 docker compose exec api alembic downgrade base
 
 ### Автогенерация миграции
-docker compose exec api alembic -c /app/alembic.ini revision --autogenerate -m "Initial migration"
+docker compose exec api alembic -c alembic.ini revision --autogenerate -m "Initial migration"
 
 ###
 docker compose exec api alembic -c alembic.ini upgrade head
