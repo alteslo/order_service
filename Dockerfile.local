@@ -7,7 +7,7 @@ WORKDIR /app
 COPY pyproject.toml uv.lock alembic.ini ./
 
 # Устанавливаем только зависимости (без самого проекта)
-RUN uv sync --no-dev --locked --no-editable --no-install-project
+RUN uv sync --locked --no-editable --no-install-project
 
 # ==========================================
 # Stage 2: Runtime
