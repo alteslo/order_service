@@ -5,12 +5,11 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from src.core.config import settings
 from src.core.logging import logger, setup_logging
+from src.core.utils import setup_debugging
 from src.infrastructure.cache import redis_client
 from src.infrastructure.database import Base, engine, init_database
 from src.infrastructure.message_broker import event_publisher
 
-
-setup_logging("DEBUG" if settings.debug else "INFO")
 
 logger.info("Запуск сервиса {name}", name=settings.app_name)
 
@@ -18,6 +17,10 @@ logger.info("Запуск сервиса {name}", name=settings.app_name)
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """Инициализация и закрытие подключений при старте/остановке"""
+    # Настройка логирования и отладки
+    setup_logging("DEBUG" if settings.debug else "INFO")
+    setup_debugging("DEBUG" if settings.debug else "INFO")
+
     # Создание таблиц (для dev, в prod использовать alembic)
     await init_database(engine, Base, debug=settings.debug)
     await redis_client.connect()  # Подключение к Redis
