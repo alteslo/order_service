@@ -44,5 +44,5 @@ async def get_current_user(
     return user
 
 
-CurrentUser = Annotated[User, Depends(get_current_user)]
+CurrentUserDep = Annotated[User, Depends(get_current_user)]
 UnitOfWorkDep = Annotated[IUnitOfWork, Depends(get_uow)]
